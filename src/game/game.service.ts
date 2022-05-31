@@ -1,47 +1,57 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { CreateGameDto } from './dto/create-game.dto';
+import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { error } from 'console';
+
 
 @Injectable()
 export class GameService {
 
-  games: Game[] = [
+  games: Game[] = [];
 
-    {
-      id:"randow id",
-      Title:"Skyrim",
-      CoverImageUrl:"no image",
-      Description:"Open world rpg game",
-      Year:2011,
-      ImdbScore:4,
-      TrailerYouTubeUrl:"no trailer",
-      GameplayYouTubeUrl:"no gameplay",
-
-    },
-    {
-      id:"randow id",
-      Title:"Oblivion",
-      CoverImageUrl:"no image",
-      Description:"Open world rpg game",
-      Year:2006,
-      ImdbScore:4,
-      TrailerYouTubeUrl:"no trailer",
-      GameplayYouTubeUrl:"no gameplay",
-
-    }
-
-  ];
+  constructor(private readonly prisma: PrismaService) {}
 
   findAll() {
-    return this.games;
+    return this.prisma.game.findMany();
   }
 
-  create(createGameDto: CreateGameDto) {
-    const game: Game = { id: 'random_id', ...createGameDto };
+  async findOne(id: string): Promise<Game> {
+    const record = await this.prisma.game.findUnique({ where: { id }});
 
-    this.games.push(game);
+    if (!record) {
+      throw new NotFoundException(`Registro com o '${id}' não encontrado.`)
+    }
 
-    return game;
+    return record;
+  }
+
+  async create(createGameDto: CreateGameDto) {
+    const game: Game = {...createGameDto};
+    return this.prisma.game.create({data:game,}).catch(this.handleError);
+}
+
+  async update(id: string, dto: UpdateGameDto): Promise<Game> {
+    await this.findOne(id);
+
+    const data: Partial<Game> = { ...dto };
+
+    return this.prisma.game.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async delete(id: string) {
+    await this.prisma.game.delete({ where: { id } });
+  }
+
+  handleError(error: Error) {
+    console.log(error.message);
+    throw new UnprocessableEntityException(error.message);
+
+    return undefined;
   }
 
 }
