@@ -5,6 +5,8 @@ import { Genders} from './entities/Genders.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { identity } from 'rxjs';
 import { stringify } from 'querystring';
+import { handleError } from 'src/Utils/handle-error.util';
+import { Prisma } from '@prisma/client';
 
 
 @Injectable()
@@ -18,7 +20,7 @@ export class GenderService {
     return this.prisma.gender.findMany();
   }
 
-  async findOne(id: string): Promise<Genders> {
+  async findById(id: string){
     const record = await this.prisma.gender.findUnique({ where: { id }});
 
     if (!record) {
@@ -28,33 +30,64 @@ export class GenderService {
     return record;
   }
 
-  create(createGenderDto: CreateGenderDto) {
-    const gender: Genders = {...createGenderDto};
-
-    return this.prisma.gender.create({data:gender,}).catch(this.handleError);
+  async findOne(id: string){
+    return this.findById(id);
   }
 
-  async update(id: string, dto: UpdateGenderDto): Promise<Genders> {
-    await this.findOne(id);
-    const data: Partial<Genders> = { ...dto };
+  create(dto: CreateGenderDto) {
+    const data: Prisma.GenderCreateInput = {
+      Name:'',
+        games: {
+          connect: dto.games.map((gamesID) => ({
+            id: gamesID,
+            })),
+        },
+      }
 
-    return this.prisma.gender.update({
-      where: { id },
-      data,
-    });
+      return this.prisma.gender
+        .create({
+          data,
+          select: {
+            Name:true,
+            games:{
+              select:{
+                Title:true
+              }
+            }
+          }
+        }).catch(handleError);
+    }
+
+  async update(id: string, dto: UpdateGenderDto){
+    await this.findOne(id);
+    const data: Prisma.GenderUpdateInput = {
+      Name:'',
+        games: {
+          connect: dto.games.map((gamesID) => ({
+            id: gamesID,
+            })),
+        },
+    }
+
+    return this.prisma.gender
+      .update({
+  where: { id },
+  data,
+  select: {
+    id: true,
+    Name: true,
+    games: {
+      select: {
+        Title: true
+      }
+    }
+  },
+}).catch(handleError);
   }
 
   async delete(id: string) {
     await this.findOne(id);
     await this.prisma.gender.delete({ where: { id } });
-  }
-
-
-  handleError(error: Error) {
-    console.log(error.message);
-    throw new UnprocessableEntityException(error.message);
-
-    return undefined;
   }
 
 }

@@ -17,7 +17,7 @@ export class ProfileController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Profile> {
+  findOne(@Param('id') id: string){
     return this.profileService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class ProfileController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateProfileDto): Promise<Profile> {
+  update(@Param('id') id: string, @Body() dto: UpdateProfileDto){
     return this.profileService.update(id, dto);
   }
 

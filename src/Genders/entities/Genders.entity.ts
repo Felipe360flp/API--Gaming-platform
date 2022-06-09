@@ -1,4 +1,7 @@
+import { Game } from "@prisma/client";
+
 export class Genders {
   id?:string;
-  name:string
+  Name:string;
+  gamesID:string[];
 }

@@ -4,12 +4,12 @@ import { exit } from 'process';
 import { CreateUserDto } from './dto/Create-User.dto';
 import {UpdateUserDto} from './dto/update-User.dto';
 import { Users } from './entities/Users.entity';
-import { UsersService } from './Users.service';
+import { UserService } from './Users.service';
 
 @ApiTags("Users")
 @Controller("Users")
 export class UsersController{
-  constructor(private userService: UsersService){}
+  constructor(private userService: UserService){}
 
   @Get()
   findAll(){
@@ -25,7 +25,7 @@ export class UsersController{
   createUser(@Body() createUserDto:CreateUserDto)
   {
     if(
-      !createUserDto.name ||
+      !createUserDto.Name ||
       !createUserDto.CPF ||
       !createUserDto.Email||
       !createUserDto.Password

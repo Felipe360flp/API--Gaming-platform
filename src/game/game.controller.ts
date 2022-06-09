@@ -17,7 +17,7 @@ export class GameController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Game> {
+  findOne(@Param('id') id: string){
     return this.gameService.findOne(id);
   }
 
@@ -35,9 +35,10 @@ export class GameController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateGameDto): Promise<Game> {
-    return this.gameService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateGameDto){
+    return this.gameService.update(id,dto)
   }
+
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

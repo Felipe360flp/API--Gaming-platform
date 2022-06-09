@@ -3,7 +3,7 @@ import { IsNumber, IsString,IsBoolean } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
-  name:string;
+  Name:string;
   @IsString()
   Email:string;
   @IsString()
@@ -12,4 +12,5 @@ export class CreateUserDto {
   CPF:number;
   @IsBoolean()
   isAdmin:boolean;
+  profiles:string[];
 }

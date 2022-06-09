@@ -18,7 +18,7 @@ export class GenderController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Genders> {
+  findOne(@Param('id') id: string){
     return this.genderService.findOne(id);
   }
 
@@ -26,7 +26,7 @@ export class GenderController {
   create(@Body() createGenderDto: CreateGenderDto) {
 
     if(
-      !createGenderDto.name
+      !createGenderDto.Name
       ){
         return console.log("it is necessary to fill in all the fields!")
       }
@@ -36,7 +36,7 @@ export class GenderController {
     }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateGenderDto): Promise<Genders> {
+  update(@Param('id') id: string, @Body() dto: UpdateGenderDto){
     return this.genderService.update(id, dto);
   }
 
