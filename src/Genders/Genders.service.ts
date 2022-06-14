@@ -7,6 +7,8 @@ import { identity } from 'rxjs';
 import { stringify } from 'querystring';
 import { handleError } from 'src/Utils/handle-error.util';
 import { Prisma } from '@prisma/client';
+import { isUppercase } from 'class-validator';
+import { CreateGameDto } from 'src/game/dto/create-game.dto';
 
 
 @Injectable()
@@ -34,55 +36,43 @@ export class GenderService {
     return this.findById(id);
   }
 
-  create(dto: CreateGenderDto) {
+  async create(dto: CreateGenderDto) {
     const data: Prisma.GenderCreateInput = {
-      Name:'',
-        games: {
-          connect: dto.games.map((gamesID) => ({
-            id: gamesID,
-            })),
-        },
-      }
-
-      return this.prisma.gender
-        .create({
-          data,
-          select: {
-            Name:true,
-            games:{
-              select:{
-                Title:true
-              }
-            }
-          }
-        }).catch(handleError);
-    }
-
-  async update(id: string, dto: UpdateGenderDto){
-    await this.findOne(id);
-    const data: Prisma.GenderUpdateInput = {
-      Name:'',
-        games: {
-          connect: dto.games.map((gamesID) => ({
-            id: gamesID,
-            })),
-        },
+      Name:dto.Name
     }
 
     return this.prisma.gender
-      .update({
-  where: { id },
-  data,
-  select: {
-    id: true,
-    Name: true,
-    games: {
-      select: {
-        Title: true
-      }
+      .create({
+        data,
+        select: {
+          id: true,
+          Name:true
+        }
+      }).catch(handleError);
+  }
+
+
+
+    async update(id: string, dto: UpdateGenderDto){
+    await this.findOne(id);
+    const data: Prisma.GenderUpdateInput = {
+      Name:'',
     }
-  },
-}).catch(handleError);
+
+    return this.prisma.gender
+    .update({
+      where: { id },
+      data,
+      select: {
+        id: true,
+        Name: true,
+        games: {
+          select: {
+            Title: true
+          }
+        }
+      },
+    }).catch(handleError);
   }
 
   async delete(id: string) {

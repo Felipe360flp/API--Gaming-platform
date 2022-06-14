@@ -5,7 +5,7 @@ export class Users{
   Name:string;
   Email:string;
   Password:string;
-  CPF:number;
+  CPF:string;
   isAdmin:boolean;
   profile?:Profile[];
 }

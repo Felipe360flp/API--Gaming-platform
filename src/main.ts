@@ -13,11 +13,13 @@ async function bootstrap() {
     .setDescription('Aplicação para gestão de jogos')
     .setVersion('1.0.0')
     .addTag('status')
+    .addTag('Auth')
     .addTag('Users')
     .addTag("Profiles")
     .addTag("Games")
     .addTag("Genders")
     .addTag("HomePage")
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

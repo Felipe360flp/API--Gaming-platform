@@ -5,23 +5,43 @@ import { IsNumber, IsString } from 'class-validator';
 
 export class CreateGameDto {
 @IsString()
+@ApiProperty({
+  example: 'O Nome do jogo',
+})
 Title:string;
 @IsString()
+@ApiProperty({
+  example: 'https://www.youtube.com/watch?v=kgx4WGK0oNU',
+})
 CoverImageUrl:string;
 @IsString()
+@ApiProperty({
+  example: 'Digite aqui um resumo sobre o jogo',
+})
 Description:string;
 @IsNumber()
+@ApiProperty({
+  example: '2005',
+})
 Year:number;
 @ApiProperty({
-  description: 'A nota deve ser entre 0 e 5',
   example: '4',
 })
 @IsNumber()
 ImdbScore:number;
 @IsString()
+@ApiProperty({
+  example: 'https://www.youtube.com/watch?v=kgx4WGK0oNU',
+})
 TrailerYouTubeUrl:string;
 @IsString()
+@ApiProperty({
+  example: 'abbb7373-c58c-4c14-bd06-c7ae0a703ea7',
+})
 GameplayYouTubeUrl:string;
 @IsString()
+  @ApiProperty({
+    example: 'abbb7373-c58c-4c14-bd06-c7ae0a703ea7',
+  })
 genderID:string;
 }

@@ -6,6 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { handleError } from 'src/Utils/handle-error.util';
 import * as bcrypt from 'bcrypt';
 import { Prisma, User } from '@prisma/client';
+import { userInfo } from 'os';
 
 @Injectable()
 export class UserService {
@@ -32,16 +33,11 @@ export class UserService {
 
   async create(dto: CreateUserDto){
     const data: Prisma.UserCreateInput = {
-      Name:'',
-      Email:'',
-      Password:'',
-      CPF:undefined,
-      isAdmin:false,
-      profiles:{
-        connect: dto.profiles.map((profileID) => ({
-        id: profileID,
-        })),
-      }
+      Name:dto.Name,
+      Email:dto.Email,
+      Password:await bcrypt.hash(dto.Password, 10),
+      CPF:dto.CPF,
+      isAdmin:dto.isAdmin,
     }
     return this.prisma.user
       .create({
@@ -53,24 +49,20 @@ export class UserService {
           Password:true,
           CPF:true,
           isAdmin:true,
-          profiles:{
-          select:{
-            Title:true
-          }
         }
-      }
-    }).catch(handleError);
-  }
+      }).catch(handleError);
+    }
+
 
 
   async update(id: string, dto: UpdateUserDto){
     await this.findById(id);
 
     const data: Prisma.UserUpdateInput = {
-      Name:'',
-      Email:'',
-      Password:'',
-      CPF:undefined,
+      Name:dto.Name,
+      Email:dto.Email,
+      Password:await bcrypt.hash(dto.Password, 10),
+      CPF:dto.CPF,
       isAdmin:false,
       profiles:{
         connect: dto.profiles.map((profileID) => ({

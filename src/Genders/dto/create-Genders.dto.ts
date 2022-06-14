@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {IsString } from 'class-validator';
+import {IsString, isUppercase } from 'class-validator';
 
 export class CreateGenderDto {
 @IsString()
+@ApiProperty({
+  example: 'João da silva',
+})
 Name:string;
-@IsString()
-games:string[]
 }

@@ -71,13 +71,13 @@ export class GameService {
   async update(id: string,dto:UpdateGameDto){
    await this.findById(id)
     const data: Prisma.GameUpdateInput = {
-      Title: '',
-      CoverImageUrl: '',
-      Description: '',
-      Year: 0,
-      ImdbScore: 0,
-      TrailerYouTubeUrl: '',
-      GameplayYouTubeUrl: '',
+      Title:dto.Title,
+      CoverImageUrl:dto.CoverImageUrl,
+      Description:dto.Description,
+      Year:dto.Year,
+      ImdbScore:dto.ImdbScore,
+      TrailerYouTubeUrl:dto.TrailerYouTubeUrl,
+      GameplayYouTubeUrl:dto.GameplayYouTubeUrl,
 
       gender: {
         connect: {

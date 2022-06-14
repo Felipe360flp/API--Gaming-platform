@@ -1,6 +1,6 @@
 import { Injectable, NotAcceptableException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-Profiles.dto';
-import { UpdateProfileDto } from './dto/update-profiles.dto';
+import { UpdateProfileDto} from './dto/update-profiles.dto'
 import { Profile } from './entities/Profiles.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handleError } from 'src/Utils/handle-error.util';
@@ -33,12 +33,6 @@ export class ProfileService {
     const data: Prisma.ProfileCreateInput = {
       Title:'',
       ImageURL:'',
-
-      user:{
-        connect:{
-      id:dto.userID
-      }
-    }
    }
 
    return this.prisma.profile
@@ -48,44 +42,29 @@ export class ProfileService {
           id: true,
           Title:true,
           ImageURL:true,
-          user:{
-            select:{
-              Name:true,
-            }
-          }
         },
       }).catch(handleError);
 
 
   }
 
-  async update(id: string, dto: UpdateProfileDto){
+  async update(id: string, dto:UpdateProfileDto ){
     await this.findById(id);
     const data: Prisma.ProfileUpdateInput = {
       Title:'',
       ImageURL:'',
-      user:{
-        connect:{
-      id:dto.userID
-      }
     }
-   }
+
    return this.prisma.profile
    .update({
-        where:{id},
-        data,
-        select: {
-          id: true,
-          Title:true,
-          ImageURL:true,
-          user:{
-            select:{
-              Name:true
-            }
-          }
-        },
-      }).catch(handleError);
-
+      where:{id},
+      data,
+      select: {
+        id: true,
+        Title:true,
+        ImageURL:true,
+      }
+    }).catch(handleError);
   }
 
   async delete(id: string) {
@@ -94,3 +73,4 @@ export class ProfileService {
   }
 
 }
+

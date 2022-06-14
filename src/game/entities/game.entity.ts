@@ -11,7 +11,6 @@ export class Game {
   TrailerYouTubeUrl:string;
   GameplayYouTubeUrl:string;
   gender?:Genders;
-  favoriteGame?:boolean;
   profiles?:Profile[];
   createdAt?:Date;
   updatedAt?:Date;

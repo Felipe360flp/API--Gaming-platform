@@ -2,34 +2,74 @@ import { Injectable, NotAcceptableException, NotFoundException, UnprocessableEnt
 import { Profile } from 'src/Profiles/entities/Profiles.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { handleError } from 'src/Utils/handle-error.util';
+import { addGameByProfile } from 'src/HomePage/dto/adGameByProfile.dto';
+import { stringify } from 'querystring';
 
 @Injectable()
 export class HomePageService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async favoriteGameByProfile(id: string){
-    const record = await this.prisma.profile.findUnique({ where: { id }});
+  async findhomePageByProfile(id: string){
+   await this.prisma.profile.findUnique({ where: {id}});
 
-    if (!record) {
+    if (!id) {
       throw new NotFoundException(`Registro com o ID '${id}' não encontrado.`);
     }
-    return this.prisma.profile
-    .findUnique({
-      Where: { id },
-      include:{
-        id: true,
-        user: {
-          select: {
-            Name: true,
+    else{
+      return this.prisma.profile
+      .findUnique({
+        where: {id},
+        select:{
+          id:true,
+          games: {
+            select: {
+              id: true,
+              Title:true,
+              CoverImageUrl:true,
+              Description:true,
+              Year:true,
+              ImdbScore:true,
+              TrailerYouTubeUrl:true,
+              GameplayYouTubeUrl:true,
+            },
           },
+
         },
-        games: {
-          select: {
-            Title: true,
-          },
+      });
+    }
+  }
+
+  async addGameByProfile(dto: addGameByProfile) {
+    const data: Prisma.ProfileCreateInput = {
+      id:'',
+      games: {
+        connect: {
+          id:dto.gameID
+        }
+      },
+    }
+
+   return this.prisma.profile
+      .create({
+        data,
+        select: {
+          id: true,
+          Title:true,
+          games:{
+            select:{
+              id: true,
+              Title:true,
+              CoverImageUrl:true,
+              Description:true,
+              Year:true,
+              ImdbScore:true,
+              TrailerYouTubeUrl:true,
+              GameplayYouTubeUrl:true,
+            }
+          }
         },
-      }
-    });
+      }).catch(handleError);
   }
 }

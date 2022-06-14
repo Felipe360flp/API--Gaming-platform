@@ -16,7 +16,6 @@ model Game {
   ImdbScore          Int?
   TrailerYouTubeUrl  String
   GameplayYouTubeUrl String
-  favoriteGame Boolean?
 
   gender Gender @relation(fields: [genderID],references: [id])
   genderID String
@@ -32,7 +31,7 @@ model Game {
 model User {
   id        String   @id @default(uuid())
   Name      String
-  CPF       Int      @unique
+  CPF       String   @unique
   Email     String   @unique
   Password  String
   isAdmin   Boolean
@@ -56,11 +55,11 @@ model Gender {
 
 model Profile{
   id String @id @default(uuid())
-  Title String @unique
-  ImageURL String
+  Title String? @unique
+  ImageURL String?
 
   user User? @relation(fields: [userID],references: [id])
-  userID String
+  userID String?
 
   games Game[]
 
