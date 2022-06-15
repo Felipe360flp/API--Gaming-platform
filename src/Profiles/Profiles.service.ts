@@ -31,8 +31,8 @@ export class ProfileService {
 
   async create(dto: CreateProfileDto) {
     const data: Prisma.ProfileCreateInput = {
-      Title:'',
-      ImageURL:'',
+      Title:dto.Title,
+      ImageURL:dto.ImageURL,
    }
 
    return this.prisma.profile
@@ -51,8 +51,8 @@ export class ProfileService {
   async update(id: string, dto:UpdateProfileDto ){
     await this.findById(id);
     const data: Prisma.ProfileUpdateInput = {
-      Title:'',
-      ImageURL:'',
+      Title:dto.Title,
+      ImageURL:dto.ImageURL,
     }
 
    return this.prisma.profile

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Gender } from '@prisma/client';
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 
 export class CreateGameDto {
@@ -36,7 +36,7 @@ ImdbScore:number;
 TrailerYouTubeUrl:string;
 @IsString()
 @ApiProperty({
-  example: 'abbb7373-c58c-4c14-bd06-c7ae0a703ea7',
+  example: 'https://www.youtube.com/watch?v=kgx4WGK0oNU',
 })
 GameplayYouTubeUrl:string;
 @IsString()

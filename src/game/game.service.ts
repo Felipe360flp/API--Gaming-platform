@@ -32,14 +32,15 @@ export class GameService {
     }
 
   async create(dto: CreateGameDto) {
+
     const data: Prisma.GameCreateInput = {
-    Title: '',
-    CoverImageUrl: '',
-    Description: '',
-    Year: 0,
-    ImdbScore: 0,
-    TrailerYouTubeUrl: '',
-    GameplayYouTubeUrl: '',
+    Title:dto.Title,
+    CoverImageUrl:dto.CoverImageUrl,
+    Description:dto.Description,
+    Year:dto.Year,
+    ImdbScore:dto.ImdbScore,
+    TrailerYouTubeUrl:dto.TrailerYouTubeUrl,
+    GameplayYouTubeUrl:dto.GameplayYouTubeUrl,
 
       gender: {
         connect: {

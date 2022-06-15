@@ -33,9 +33,28 @@ export class UsersController{
     return this.userService.findOne(id)
   }
 
+  @Post("create/adm")
+  @ApiOperation({
+    summary: 'Cadastrar um usuário de nível ADM',
+  })
+  createAdmin(@Body() createUserDto:CreateUserDto)
+  {
+    if(
+      !createUserDto.Name ||
+      !createUserDto.CPF ||
+      !createUserDto.Email||
+      !createUserDto.Password
+      ){
+        return console.log("it is necessary to fill in all the fields!")
+      }else{
+        return this.userService.createADM(createUserDto)
+      }
+    }
+
+
   @Post("create")
   @ApiOperation({
-    summary: 'Criar um usuário',
+    summary: 'Cadastrar um usuário',
   })
   createUser(@Body() createUserDto:CreateUserDto)
   {
@@ -47,7 +66,6 @@ export class UsersController{
       ){
         return console.log("it is necessary to fill in all the fields!")
       }else{
-        createUserDto.isAdmin=false;
         return this.userService.create(createUserDto)
       }
     }

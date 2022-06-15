@@ -16,7 +16,7 @@ export class HomePageController {
 
   @Get('profile/:id')
   @ApiOperation({
-    summary: 'Localizar a página de um determinado perfil',
+    summary: 'Localizar a homepage de um determinado perfil',
   })
   findById(@Param('id') id: string){
     return this.homePageService.findhomePageByProfile(id);

@@ -31,13 +31,13 @@ export class UserService {
     return this.findById(id);
   }
 
-  async create(dto: CreateUserDto){
+  async createADM(dto: CreateUserDto){
     const data: Prisma.UserCreateInput = {
       Name:dto.Name,
       Email:dto.Email,
       Password:await bcrypt.hash(dto.Password, 10),
       CPF:dto.CPF,
-      isAdmin:dto.isAdmin,
+      isAdmin:true,
     }
     return this.prisma.user
       .create({
@@ -52,6 +52,28 @@ export class UserService {
         }
       }).catch(handleError);
     }
+
+    async create(dto: CreateUserDto){
+      const data: Prisma.UserCreateInput = {
+        Name:dto.Name,
+        Email:dto.Email,
+        Password:await bcrypt.hash(dto.Password, 10),
+        CPF:dto.CPF,
+        isAdmin:false,
+      }
+      return this.prisma.user
+        .create({
+          data,
+          select: {
+            id:true,
+            Name:true,
+            Email:true,
+            Password:true,
+            CPF:true,
+            isAdmin:true,
+          }
+        }).catch(handleError);
+      }
 
 
 

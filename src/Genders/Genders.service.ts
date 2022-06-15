@@ -56,7 +56,7 @@ export class GenderService {
     async update(id: string, dto: UpdateGenderDto){
     await this.findOne(id);
     const data: Prisma.GenderUpdateInput = {
-      Name:'',
+      Name:dto.Name,
     }
 
     return this.prisma.gender

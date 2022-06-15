@@ -43,7 +43,7 @@ export class HomePageService {
 
   async addGameByProfile(dto: addGameByProfile) {
     const data: Prisma.ProfileCreateInput = {
-      id:'',
+      id:dto.gameID,
       games: {
         connect: {
           id:dto.gameID

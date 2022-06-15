@@ -1,11 +1,14 @@
 import { Body,Controller, Get,Post,Res,Param,Patch,Delete,HttpCode,HttpStatus, UseGuards} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags,ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { userInfo } from 'os';
 import { exit } from 'process';
+import { UserService } from 'src/Users/Users.service';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
 import { GameService } from './game.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @ApiTags('Games')
 @UseGuards(AuthGuard())
@@ -27,7 +30,7 @@ export class GameController {
     summary: 'Localizar um jogo',
   })
   findOne(@Param('id') id: string){
-    return this.gameService.findOne(id);
+     return this.gameService.findOne(id);
   }
 
   @Post()
@@ -40,10 +43,10 @@ export class GameController {
       createGameDto.ImdbScore <=5 &&
       !createGameDto.Title &&
       createGameDto.Title ==""
-      ){
+    ){
       return this.gameService.create(createGameDto);
     }
-    return console.log("Error: Needs Title/imdbScore needs a value between 1 and 5!")
+    return console.log("Error: Needs Title / imdbScore needs a value between 1 and 5! / isADM?")
   }
 
   @Patch(':id')
@@ -51,7 +54,8 @@ export class GameController {
     summary: 'Alterar dados de um jogo',
   })
   update(@Param('id') id: string, @Body() dto: UpdateGameDto){
-    return this.gameService.update(id,dto)
+
+    return this.gameService.update(id,dto);
   }
 
 
