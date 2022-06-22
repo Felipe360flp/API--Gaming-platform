@@ -1,7 +1,6 @@
 import { Injectable, NotAcceptableException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserDto } from './dto/Create-User.dto';
 import {UpdateUserDto} from './dto/update-User.dto';
-import { Users } from './entities/Users.entity';
 import { PrismaService } from '../prisma/prisma.service';
 import { handleError } from 'src/Utils/handle-error.util';
 import * as bcrypt from 'bcrypt';
