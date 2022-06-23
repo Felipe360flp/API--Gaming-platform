@@ -17,8 +17,7 @@ model Game {
   TrailerYouTubeUrl  String
   GameplayYouTubeUrl String
 
-  gender Gender @relation(fields: [genderID],references: [id])
-  genderID String
+  gender Gender[]
 
   profile Profile[]
 
@@ -34,7 +33,7 @@ model User {
   CPF       String   @unique
   Email     String   @unique
   Password  String
-  isAdmin   Boolean
+  isAdmin   Boolean @default(false)
 
   profiles Profile[]
 
