@@ -6,12 +6,24 @@ import {UpdateUserDto} from './dto/update-User.dto';
 import { Users } from './entities/Users.entity';
 import { UserService } from './Users.service';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from '@prisma/client';
+import { isAdmin } from 'src/Utils/is-admin.util';
+import { LoggedUser } from 'src/auth/logged-user.decorator';
+import { changePass } from './dto/change-pass.dto';
+import { use } from 'passport';
 
 
 @ApiTags("Users")
 @Controller("Users")
 export class UsersController{
   constructor(private userService: UserService){}
+
+  /**
+   * Recebe uma requisição GET e retorna um objeto de status
+   * da aplicação com a URL de documentação
+   * @param req Objeto de Request do Express
+   * @returns Objeto de status da aplicação
+   */
 
   @Get()
   @ApiOperation({
@@ -30,7 +42,7 @@ export class UsersController{
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   findOne(@Param("id") id:string):Promise<Users>{
-    return this.userService.findOne(id)
+    return this.userService.findById(id)
   }
 
   @Post("create/adm")
@@ -76,8 +88,11 @@ export class UsersController{
     })
       @UseGuards(AuthGuard())
       @ApiBearerAuth()
-      update(@Param('id') id: string, @Body() dto: UpdateUserDto): Promise<Users> {
-        return this.userService.update(id, dto);
+      update(@Param('id') id: string,
+      @Body() dto: UpdateUserDto,
+      @LoggedUser() user:User,
+      ){
+        return this.userService.update(id,dto,user);
       }
 
       @Delete(':id')
@@ -87,7 +102,8 @@ export class UsersController{
       @HttpCode(HttpStatus.NO_CONTENT)
       @UseGuards(AuthGuard())
       @ApiBearerAuth()
-      delete(@Param('id') id: string) {
+      delete(@Param('id') id: string,@LoggedUser() user:User){ // Usar este de exemplo para implementar o restante
+      isAdmin(user);
       this.userService.delete(id);
   }
 

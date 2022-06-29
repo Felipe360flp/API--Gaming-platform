@@ -6,6 +6,6 @@ export class Users{
   Email:string;
   Password:string;
   CPF:string;
-  isAdmin:boolean;
+  isAdmin?:boolean;
   profile?:Profile[];
 }

@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Gender } from '@prisma/client';
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, isNotEmpty, IsNumber, IsString, Max, Min, min } from 'class-validator';
 
 
 export class CreateGameDto {
 @IsString()
+@IsNotEmpty()
 @ApiProperty({
   example: 'O Nome do jogo',
 })
@@ -20,6 +21,7 @@ CoverImageUrl:string;
 })
 Description:string;
 @IsNumber()
+@Min(1995)
 @ApiProperty({
   example: '2005',
 })
@@ -28,6 +30,9 @@ Year:number;
   example: '4',
 })
 @IsNumber()
+@Min(0)
+@Max(5)
+@IsNotEmpty()
 ImdbScore:number;
 @IsString()
 @ApiProperty({

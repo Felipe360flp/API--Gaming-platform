@@ -21,6 +21,8 @@ model Game {
 
   profile Profile[]
 
+  profileGame ProfileGames[]
+
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
@@ -62,7 +64,26 @@ model Profile{
 
   games Game[]
 
+  profileGame ProfileGames[]
+
   @@map("profile")
+}
+
+model ProfileGames{
+  id String @id
+  profile Profile @relation(fields: [profileID],references: [id])
+  profileID String @map("profile_id")
+
+  game Game @relation(fields: [gameID],references: [id])
+  gameID String @map("game_id")
+
+  favorite Boolean @default(false)
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@unique([profileID,gameID])
+  @@map("profile_to_game")
 }
 
 

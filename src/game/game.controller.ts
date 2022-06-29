@@ -38,15 +38,8 @@ export class GameController {
     summary: 'Adicionar um jogo',
   })
   create(@Body() createGameDto: CreateGameDto) {
-    if(
-      createGameDto.ImdbScore >=0 &&
-      createGameDto.ImdbScore <=5 &&
-      !createGameDto.Title &&
-      createGameDto.Title ==""
-    ){
-      return this.gameService.create(createGameDto);
-    }
-    return console.log("Error: Needs Title / imdbScore needs a value between 1 and 5! / isADM?")
+
+    return this.gameService.create(createGameDto);
   }
 
   @Patch(':id')

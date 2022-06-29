@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {IsString, isUppercase } from 'class-validator';
+import { Gender } from '@prisma/client';
+import {IsNotEmpty, IsString, isUppercase } from 'class-validator';
 
 export class CreateGenderDto {
 @IsString()
+@IsNotEmpty()
 @ApiProperty({
-  example: 'João da silva',
+  description:'Descrição do gênero',
+  example:'adventure',
 })
 Name:string;
 }

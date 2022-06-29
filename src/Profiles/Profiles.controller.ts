@@ -7,6 +7,10 @@ import { CreateProfileDto } from './dto/create-Profiles.dto';
 import { UpdateProfileDto } from './dto/update-profiles.dto';
 import { Profile } from './entities/Profiles.entity';
 import { ProfileService } from './Profiles.service';
+import { LoggedUser } from 'src/auth/logged-user.decorator';
+import { Users } from 'src/Users/entities/Users.entity';
+import { User } from '@prisma/client';
+import { isAdmin } from 'src/Utils/is-admin.util';
 
 @ApiTags('Profiles')
 @UseGuards(AuthGuard())
@@ -35,7 +39,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Criar um perfil de usuário',
   })
-  create(@Body() createProfileDto: CreateProfileDto) {
+  create(@Body() createProfileDto: CreateProfileDto,@LoggedUser() user:User) {// Falta verificar usuário logado (Logged user)
     if(createProfileDto){
       return this.profileService.create(createProfileDto);
     }

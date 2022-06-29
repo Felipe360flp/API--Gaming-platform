@@ -12,8 +12,8 @@ export class GameService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.game.findMany()
+    async findAll() {
+      return this.prisma.game.findMany()
     }
 
     async findById(id: string){
@@ -28,7 +28,7 @@ export class GameService {
     }
 
   async findOne(id: string){
-    return this.findById(id);
+    return await this.prisma.game.findUnique({where: {id}})
     }
 
   async create(dto: CreateGameDto) {

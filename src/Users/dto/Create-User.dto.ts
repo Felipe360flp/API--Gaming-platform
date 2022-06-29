@@ -22,7 +22,12 @@ export class CreateUserDto {
     example: '56485668541',
   })
   CPF:string;
+
   @IsBoolean()
-  isAdmin:boolean;
+  @ApiProperty({
+    example: 'true or false',
+  })
+  isAdmin?:boolean;
+
   profiles?:string[];
 }

@@ -6,13 +6,20 @@ import { handleError } from 'src/Utils/handle-error.util';
 import * as bcrypt from 'bcrypt';
 import { Prisma, User } from '@prisma/client';
 import { userInfo } from 'os';
+import { isAdmin } from 'src/Utils/is-admin.util';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService){}
 
   findAll(){
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      select:{
+        id:true,
+        Name:true,
+        Password:false
+      }
+    });
   }
 
   async findById(id: string){
@@ -27,7 +34,14 @@ export class UserService {
   }
 
   async findOne(id: string) {
-    return this.findById(id);
+    return await this.prisma.user.findUnique({
+      where:{id},
+      select:{
+        id:true,
+        Name:true,
+        Password:false
+      }
+    });
   }
 
   async createADM(dto: CreateUserDto){
@@ -67,24 +81,24 @@ export class UserService {
             id:true,
             Name:true,
             Email:true,
-            Password:true,
-            CPF:true,
-            isAdmin:true,
+            Password:false,
+            CPF:false,
+            isAdmin:false,
           }
         }).catch(handleError);
       }
 
 
 
-  async update(id: string, dto: UpdateUserDto){
-    await this.findById(id);
+  async update(id: string, dto: UpdateUserDto,user:User){
+    isAdmin(user)
 
     const data: Prisma.UserUpdateInput = {
       Name:dto.Name,
       Email:dto.Email,
       Password:await bcrypt.hash(dto.Password, 10),
       CPF:dto.CPF,
-      isAdmin:false,
+      isAdmin:dto.isAdmin,
       profiles:{
         connect: dto.profiles.map((profileID) => ({
         id: profileID,
