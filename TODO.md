@@ -1,6 +1,7 @@
 ### Todo
 
-- [ ] ?
+- [x] Tornar o campo 'imgscore' opicional na criação do jogo pelo admin
+- [x] Criar função para atualizar o campo 'imgscore' sempre que ouver uma nova votação
 
 ### In Progress
 
