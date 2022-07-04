@@ -1,19 +1,19 @@
- Example of TODO.md
-
-This is an example of TODO.md
-
-View the raw content of this file to understand the format.
-
 ### Todo
 
-- [ ] Work on the website ~3d #feat @john 2020-03-20
-- [ ] Fix the homepage ~1d #bug @jane
-  - [ ] Sub-task or description
+- [ ] ?
 
 ### In Progress
 
-- [ ] Work on Github Repo [JIRA-345]
+- [x] Atribuir a todos os endpoints necessários a função 'LoggedUser'.
 
 ### Done ✓
 
-- [x] Create my first TODO.md
+- [x] Validação de dados em todos os endpoints com class-validator,
+- [x] Status Code corretos em todos os endpoints:200, 201, 400, 404, etc.
+- [x] Persistência de Dados no SQL com Prisma;
+- [x] Formatação do código utilizando o Prettier/ESLint;
+- [x] Documentação dos endpoints com Swagger;
+- [x] Diagrama de relacionamentos do banco de dados;
+- [x] Cors habilitado;
+- [x] Deploy do projeto;
+- [x] Deploy do banco de dados.

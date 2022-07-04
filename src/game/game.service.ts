@@ -12,12 +12,12 @@ export class GameService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-    async findAll() {
+    findAll() {
       return this.prisma.game.findMany()
     }
 
-    async findById(id: string){
-      const record = await this.prisma.game.findUnique({
+    findById(id: string){
+      const record = this.prisma.game.findUnique({
         where: { id },
       });
 
@@ -31,7 +31,7 @@ export class GameService {
     return await this.prisma.game.findUnique({where: {id}})
     }
 
-  async create(dto: CreateGameDto) {
+  create(dto: CreateGameDto) {
 
     const data: Prisma.GameCreateInput = {
     Title:dto.Title,
@@ -44,7 +44,9 @@ export class GameService {
 
       gender: {
         connect: {
-          id: dto.genderID,
+          id: dto.gender.map((genderID) => ({
+            id: genderID,
+            })),
         }
       },
     }
@@ -69,8 +71,8 @@ export class GameService {
       }).catch(handleError);
   }
 
-  async update(id: string,dto:UpdateGameDto){
-   await this.findById(id)
+   update(id: string,dto:UpdateGameDto){
+   this.findById(id)
     const data: Prisma.GameUpdateInput = {
       Title:dto.Title,
       CoverImageUrl:dto.CoverImageUrl,
@@ -82,9 +84,11 @@ export class GameService {
 
       gender: {
         connect: {
-          id: dto.genderID,
+          id: dto.gender.map((genderID) => ({
+            id: genderID,
+            })),
         }
-      },
+      }
     }
 
     return this.prisma.game

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Gender } from '@prisma/client';
-import { IsBoolean, IsNotEmpty, isNotEmpty, IsNumber, IsString, Max, Min, min } from 'class-validator';
+import { IsBoolean, IsNotEmpty, isNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Max, Min, min } from 'class-validator';
 
 
 export class CreateGameDto {
@@ -45,8 +45,10 @@ TrailerYouTubeUrl:string;
 })
 GameplayYouTubeUrl:string;
 @IsString()
+@IsUUID("all",{each:true})
+@IsOptional()
   @ApiProperty({
     example: 'abbb7373-c58c-4c14-bd06-c7ae0a703ea7',
   })
-genderID:string;
+gender:string[];
 }
