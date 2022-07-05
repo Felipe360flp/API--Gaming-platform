@@ -13,4 +13,10 @@ Title:string;
 })
 @IsString()
 ImageURL:string;
+
+@ApiProperty({
+  example: 'hjihosapkdapskasdkajaifasdpfdjadfja',
+})
+@IsString()
+userID:string;
 }
